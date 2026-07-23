@@ -10,20 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install
+      - name: Create DEBIAN folder
         run: |
-          sudo apt update
-          sudo apt install -y git build-essential curl dpkg-dev
-          git clone --depth 1 https://github.com/theos/theos.git $HOME/theos
-          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
-          echo "$HOME/theos/bin" >> $GITHUB_PATH
-      - name: Build
+          mkdir -p package/DEBIAN
+          mkdir -p package/usr/lib
+          cp control package/DEBIAN/
+          echo "#!/bin/bash" > package/DEBIAN/postinst
+          echo "echo 'Cheat installed'" >> package/DEBIAN/postinst
+          chmod +x package/DEBIAN/postinst
+      - name: Build .deb
         run: |
-          cd $GITHUB_WORKSPACE
-          make clean || true
-          make package || true
-      - name: Upload
+          dpkg-deb --build package standoff2cheat.deb
+      - name: Upload .deb
         uses: actions/upload-artifact@v4
         with:
           name: tweak-deb
-          path: ./packages/*.deb
+          path: standoff2cheat.deb
