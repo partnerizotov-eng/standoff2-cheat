@@ -1,0 +1,9 @@
+Package: com.standoff2.cheat
+Name: Standoff2Cheat
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Чит меню для Standoff 2
+Maintainer: User
+Author: User
+Section: Tweaks
+Depends: mobilesubstrate
